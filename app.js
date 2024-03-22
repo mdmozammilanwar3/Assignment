@@ -7,6 +7,9 @@ app.use(bodyParser.json());
 const userRouter=require("./routers/userRouter");
 const productRouter=require("./routers/productRouter");
 const morgan = require('morgan');
+
+const cors = require('cors');
+app.use(cors());
 // apply middleware
 app.use(morgan('tiny'));
 app.use(Logger);

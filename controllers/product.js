@@ -23,6 +23,7 @@ const createProduct = async (req, res, next) => {
     
     try {
         const product = new Product(req.body);
+        product.image="https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=600";
         await product.save();
         res.status(201).json({message:"Product Created Sucessfully",data:product});
     } catch (err) {

@@ -72,36 +72,10 @@ const register = async (req, res) => {
   try {
       const savedUser = await user.save();
       sendMailOnRegistration(user.email,'User Registered Sucessfully',otp);
-      res.status(201).send({message:"User registered sucessfullys",user: savedUser._id });
+      res.status(201).send({message:"User registered sucessfullys",user: savedUser });
   } catch (err) {
       res.status(400).send(err);
   }
 };
-const verifyOTPAndRegister = async (req, res) => {
-  const { email, otp } = req.body;
-
-  // Find user by email and check OTP
-  const user = await User.findOne({ email: email });
-  if (!user) return res.status(400).send('Invalid email or OTP');
-
-  if (user.otp !== otp || user.otpExpires < Date.now()) {
-      return res.status(400).send('Invalid OTP or OTP expired');
-  }
-
-  // If OTP is valid, hash the password and save the user
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-  user.password = hashedPassword;
-  user.otp = undefined;
-  user.otpExpires = undefined;
-
-  try {
-      const savedUser = await user.save();
-      res.status(201).send({ message: 'User registered successfully', user: savedUser._id });
-  } catch (err) {
-      console.error('Error registering user:', err);
-      res.status(500).send('Internal Server Error');
-  }
-};
-module.exports = {login,register,verifyOTP,verifyOTPAndRegister};
+module.exports = {login,register,verifyOTP};
 
